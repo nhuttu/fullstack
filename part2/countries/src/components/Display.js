@@ -15,11 +15,13 @@ const Filter = ({ countries }) => {
             <Indepth country={country} />
         )
     }
+   
+    
     return (
         <div > 
             {countries.map(c => <li style={{ listStyle: 'none' }} key={c.capital}>
                 {c.name.common}
-                <button onClick={() => <Indepth country={c}/>}>show</button>
+                <button onClick={() => console.log('cant figure it out')}>show</button>
             </li>)}
         </div>
 
