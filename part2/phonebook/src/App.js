@@ -1,19 +1,49 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Persons from './components/Persons'
 import Filterbar from './components/Filterbar'
 import PersonForm from './components/PersonForm'
+import backend from './services/backend'
 
 const App = () => {
-  const [persons, setPersons] = useState([
-    { name: 'Arto Hellas', number: '040-123456', id: 1 },
-    { name: 'Ada Lovelace', number: '39-44-5323523', id: 2 },
-    { name: 'Dan Abramov', number: '12-43-234345', id: 3 },
-    { name: 'Mary Poppendieck', number: '39-23-6423122', id: 4 }
-  ])
-
+  const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [newSearch, setNewSearch] = useState('')
+  const [successMessage, setsuccessMessage] = useState('')
+  const [latestDelete, setlatestDelete] = useState('')
+
+  const Success = ({ person }) => {
+    if (person === '') {
+      return null
+    }
+
+    return (
+      <div className='success'>
+        Added {person}
+      </div>
+    )
+  }
+  const Failure = ({ person }) => {
+    if (person === '') {
+      return null
+    }
+
+    return (
+      <div className='failure'>
+        Information of {person} has already been removed from the server
+      </div>
+    )
+  }
+  useEffect(() => {
+    backend
+      .getAll()
+      .then(info => {
+        setPersons(info)
+      })
+      .catch(error => {
+        console.log(latestDelete + 'poistettu jo')
+      })
+  }, [])
 
   const handleTextChange = (event) => {
     setNewSearch(event.target.value)
@@ -28,32 +58,75 @@ const App = () => {
     setNewNumber(event.target.value)
   }
 
+  const deletion = id => {
+    const who = persons.find(p => p.id === id)
+    if (window.confirm(`Delete ${who.name} ?`)) {
+      console.log(`${id} deleted`)
+      backend.
+        deletion(id)
+        .then(r => {
+          setPersons(persons.filter(p => p.id !== id))
+        })
+        .catch(error => {
+          console.log(error)
+        }
+        )
+    }
+  }
+
   const addName = (event) => {
     event.preventDefault()
     const newPerson = {
       name: newName,
       number: newNumber
     }
-    if (persons.some(p => p.name === newName)) {
-      setNewName('')
-      return window.alert(`${newName} is already added to phonebook`
+    if (persons.some(p => p.name.toLowerCase() === newName.toLowerCase())) {
+      if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
+        const who = persons.find(p => p.name === newName).id
 
-      )
+        backend.
+          replace(who, newPerson)
+          .then(r => {
+            setPersons(persons.map(p => p.name === r.data.name ? r.data : p))
+          })
+          .catch(error => {
+            setlatestDelete(newPerson.name)
+            setTimeout(() => {
+              setlatestDelete('')
+            }, 10000)
+          })  
+      }
     }
+    else {
 
-    console.log(newPerson)
-    setPersons(persons.concat(newPerson))
-    setNewName('')
-    setNewNumber('')
+      backend.
+        create(newPerson)
+        .then(r => {
+          console.log(r.data)
+          setPersons(persons.concat(r.data))
+          setNewName('')
+          setNewNumber('')
+          setsuccessMessage(r.data.name)
+          setTimeout(() => {
+            setsuccessMessage('')
+          }
+          )
+
+
+        }
+        )
+    }
   }
   return (
     <div>
       <h2>Phonebook</h2>
+      <Success person={successMessage} />
+      <Failure person={latestDelete} />
       <Filterbar handleTextChange={handleTextChange} />
       <h3>Add a new</h3>
       <PersonForm addName={addName} handleNumberChange={handleNumberChange} handleNoteChange={handleNoteChange} newName={newName} newNumber={newNumber} />
       <h3>Numbers</h3>
-      <Persons persons={persons} keyword={newSearch} />
+      <Persons persons={persons} keyword={newSearch} deletion={deletion} />
     </div>
   )
 }
