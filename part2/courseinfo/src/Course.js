@@ -31,4 +31,8 @@ const Course = ({course}) => {
     </div>
   )
 }
+<<<<<<< HEAD
 export default Course
+=======
+export default Course
+>>>>>>> ad43e4b3a79e10cdf278ef9f6a5985f838576bf3
