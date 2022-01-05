@@ -16,7 +16,6 @@ const Filter = ({ countries }) => {
         )
     }
    
-    
     return (
         <div > 
             {countries.map(c => <li style={{ listStyle: 'none' }} key={c.capital}>
