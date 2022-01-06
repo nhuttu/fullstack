@@ -1,6 +1,12 @@
-const { response } = require('express')
 const express = require('express')
+const { json } = require('express/lib/response')
 const app = express()
+const morgan = require('morgan')
+app.use(express.json())
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'))
+morgan.token('body', req => JSON.stringify(req.body))
+
+
 
 let persons = [
   {
@@ -37,9 +43,7 @@ app.get('/info', (req, res) => {
 
 app.get('/api/persons/:id', (req, res) => {
   const id = Number(req.params.id)
-  console.log(id)
   const pers = persons.find(p => p.id === id)
-  console.log(pers)
   if (pers) {
     res.json(pers)
   } else {
@@ -55,6 +59,32 @@ app.delete('/api/persons/:id', (req, res) => {
   res.status(204).end()
 })
 
+const generateId = () => {
+  return Math.floor(Math.random() * 10000) + 1
+}
+app.post('/api/persons', (req, res) => {
+  const body = req.body
+  if (!body.number) {
+    return res.status(400).json({
+      error: 'number missing'
+    })
+  }
+  
+  if (persons.map(p => p.number).includes(body.number) || (persons.map(p => p.name).includes(body.name))) {
+    return res.status(400).json({
+      error: 'number or name already is in the phonebook'
+    })
+  }
+  const person = {
+    name: body.name,
+    number: body.number,
+    id: generateId()
+  }
+
+  persons = persons.concat(person)
+  res.json(person)
+  
+})
 const PORT = 3001
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
