@@ -1,6 +1,5 @@
 import ReactDOM from 'react-dom'
 import App from './App.js'
-<<<<<<< HEAD
 
 const notes = [
   {
@@ -27,9 +26,3 @@ ReactDOM.render(
   <App notes={notes} />,
   document.getElementById('root')
 )
-=======
-import './index.css'
-
-
-ReactDOM.render(<App />, document.getElementById('root'))
->>>>>>> ad43e4b3a79e10cdf278ef9f6a5985f838576bf3
