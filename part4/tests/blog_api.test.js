@@ -4,29 +4,22 @@ const app = require('../app')
 const helper = require('./test.helper')
 const api = supertest(app)
 
-test('notes are returned as json', async () => {
+test('blogs are returned as json', async () => {
     await api
         .get('/api/blogs')
         .expect(200)
         .expect('Content-Type', /application\/json/)
 }, 10000)
 
-test('await test2', async () => {
-    const response = await api.get('/api/blogs')
 
-    expect(response.body).toHaveLength(2)
-
-}, 10000)
-
-test('lets check another one', async () => {
+test('lets check likes', async () => {
     const ap = await api.get('/api/blogs')
     expect(ap.body[0].likes).toBe(50)
 
 })
 test('id test', async () => {
-    const response = await api.get('/api/blogs')
-    console.log(response.body[0]._id)
-    expect(response.body[0]._id).toBeDefined()
+    const res = await helper.blogsInDB()
+    res.forEach(i => expect(i).toBeDefined())
 }, 10000)
 
 test('succeeds with valid data', async () => {
@@ -80,9 +73,29 @@ test('url and title missing', async () => {
     await api
         .post('/api/blogs')
         .send(newBlog)
-        .expect(500)
+        .expect(400)
 
+    const blogs = await helper.blogsInDB()
+    expect(blogs).not.toContain(newBlog)
 
+}, 10000)
+test('deletion', async () => {
+    const blogsAtStartlength = (await helper.blogsInDB()).length
+    const firstBlog = (await helper.blogsInDB())[0]
+
+    console.log(firstBlog._id.toString())
+
+    await api
+        .delete(`/api/blogs/${firstBlog._id.toString()}`)
+        .expect(200)
+
+    const blogsAtEnd = await helper.blogsInDB()
+
+    expect(blogsAtEnd).toHaveLength(blogsAtStartlength - 1)
+
+    const contents = blogsAtEnd.map(r => r.title)
+
+    expect(contents).not.toContain(firstBlog.title)
 }, 10000)
 
 afterAll(() => {

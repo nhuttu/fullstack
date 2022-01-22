@@ -7,3 +7,17 @@ Content-Type: application/json
     "url": "http://abc.abasdc",
     "likes": 111
 }
+###
+
+DELETE  http://localhost:3003/api/blogs/61e9550225017600a8a37762
+
+###
+PUT http://localhost:3003/api/blogs/61ea6ae8c538a3bbb9cfff32
+Content-Type: application/json
+
+{
+    "title": "",
+    "author": "",
+    "url": "",
+    "likes": 111
+}
