@@ -2,10 +2,10 @@ POST http://localhost:3003/api/blogs
 Content-Type: application/json
 
 {
-    "title": "jep",
-    "author": "joku",
-    "url": "http://abc.abasdc",
-    "likes": 111
+    "title": "asdd",
+    "author": "dd",
+    "url": "httpddabc.abasdc"
+    
 }
 ###
 
@@ -19,5 +19,5 @@ Content-Type: application/json
     "title": "",
     "author": "",
     "url": "",
-    "likes": 111
+    "likes": 36
 }

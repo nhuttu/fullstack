@@ -27,9 +27,13 @@ const note = new Note({
   important: true,
 })
 
-Note.find({content: 'HTML is Easkkky'}).then(result => {
-    result.forEach(note => {
-      console.log(note)
-    })
-    mongoose.connection.close()
+Note.find({ content: 'HTML is Easkkky' }).then(result => {
+  result.forEach(note => {
+    console.log(note)
   })
+  mongoose.connection.close()
+})
+note.save().then(result => {
+  console.log('note saved!')
+  mongoose.connection.close()
+})

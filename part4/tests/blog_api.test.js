@@ -83,10 +83,10 @@ test('deletion', async () => {
     const blogsAtStartlength = (await helper.blogsInDB()).length
     const firstBlog = (await helper.blogsInDB())[0]
 
-    console.log(firstBlog._id.toString())
+    console.log(firstBlog.id.toString())
 
     await api
-        .delete(`/api/blogs/${firstBlog._id.toString()}`)
+        .delete(`/api/blogs/${firstBlog.id.toString()}`)
         .expect(200)
 
     const blogsAtEnd = await helper.blogsInDB()
