@@ -1,9 +1,9 @@
-POST http://localhost:3003/api/users
+POST http://localhost:3003/api/blogs
 Content-Type: application/json
 
 {
-    "username": "rre",
-    "name": "hudde",
+    "username": "joku",
+    "name": "pepe",
     "password": "moi"
     
 }
@@ -12,12 +12,13 @@ Content-Type: application/json
 DELETE  http://localhost:3003/api/blogs/61e9550225017600a8a37762
 
 ###
-PUT http://localhost:3003/api/blogs/61ea6ae8c538a3bbb9cfff32
+POST http://localhost:3003/api/blogs
 Content-Type: application/json
 
 {
-    "title": "",
-    "author": "",
-    "url": "",
-    "likes": 36
+    "title": "uuss",
+    "author": "jekkksp",
+    "url": "httkkkksp abc",
+    "likes": 306,
+    "userId": "61f17be641aac516fad1a98d"
 }
