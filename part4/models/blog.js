@@ -1,5 +1,4 @@
 const mongoose = require('mongoose')
-const uniqueV = require('mongoose-unique-validator')
 const blogSchema = new mongoose.Schema({
 
     title: { type: String, required: true },
@@ -17,5 +16,4 @@ blogSchema.set('toJSON', {
 
     }
 })
-blogSchema.plugin(uniqueV)
 module.exports = mongoose.model('Blog', blogSchema)

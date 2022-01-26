@@ -1,10 +1,10 @@
-POST http://localhost:3003/api/blogs
+POST http://localhost:3003/api/users
 Content-Type: application/json
 
 {
-    "title": "asdd",
-    "author": "dd",
-    "url": "httpddabc.abasdc"
+    "username": "rre",
+    "name": "hudde",
+    "password": "moi"
     
 }
 ###
