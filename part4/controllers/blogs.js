@@ -6,9 +6,7 @@ blogsRouter.get('/api/blogs', async(request, response) => {
     const blogs = await Blog.find({})
     response.json(blogs)
 })
-blogsRouter.get('/', (req, res) => {
-    res.send('<p>hello</p>')
-})
+
 blogsRouter.post('/api/blogs', async(request, response, next) => {
     const body = request.body
     const user = await User.findById(body.userId)
@@ -20,9 +18,14 @@ blogsRouter.post('/api/blogs', async(request, response, next) => {
         user: user.id
     })
     try {
+        console.log('we go here')
         const saved = await blog.save()
+        console.log(saved.id)
         user.blogs = user.blogs.concat(saved.id)
-        response.status(201).json(saved)
+        console.log(user.blogs)
+        await user.save()
+        console.log('wer dont go here')
+        response.status(201).json(saved.toJSON())
     } catch (e) {
         response.status(400)
         next(e)

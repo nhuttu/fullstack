@@ -11,6 +11,7 @@ const userSchema = new mongoose.Schema({
     passwordHash: String,
 
 })
+userSchema.plugin(uniqueV)
 
 userSchema.set('toJSON', {
     transform: (doc, retObj) => {
@@ -22,5 +23,4 @@ userSchema.set('toJSON', {
 })
 
 const User = mongoose.model('User', userSchema)
-userSchema.plugin(uniqueV)
 module.exports = User
