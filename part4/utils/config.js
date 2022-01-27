@@ -9,7 +9,11 @@ const MONGODB_URI = process.env.NODE_ENV === 'test'
   // eslint-disable-next-line no-undef
   : process.env.MONGODB_URI
 
+// eslint-disable-next-line no-undef
+const SECRET = process.env.SECRET
+
 module.exports = {
     MONGODB_URI,
-    PORT
+    PORT,
+    SECRET
 }

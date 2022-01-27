@@ -1,10 +1,8 @@
-POST http://localhost:3003/api/blogs
-Content-Type: application/json
-
+POST http://localhost:3003/api/users
 {
-    "username": "joku",
-    "name": "pepe",
-    "password": "moi"
+    "username": "hurre",
+    "name": "hudde123",
+    "password": "hello"
     
 }
 ###
@@ -16,9 +14,9 @@ POST http://localhost:3003/api/blogs
 Content-Type: application/json
 
 {
-    "title": "uuss",
-    "author": "jekkksp",
-    "url": "httkkkksp abc",
-    "likes": 306,
+    "title": "uudempi",
+    "author": "uus123",
+    "url": "uus.com",
+    "likes": 326,
     "userId": "61f17be641aac516fad1a98d"
 }
