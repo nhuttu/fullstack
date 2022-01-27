@@ -27,7 +27,6 @@ usersRouter.post('/api/users', async(request, response, next) => {
 usersRouter.get('/api/users', async(req, res) => {
     console.log('we get here')
     const users = await User.find({}).populate('blogs')
-    console.log('we dont get here')
     res.json(users.map(u => u.toJSON()))
 })
 
