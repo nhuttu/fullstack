@@ -1,6 +1,5 @@
 const blogsRouter = require('express').Router()
 const Blog = require('../models/blog')
-const User = require('../models/user')
 const jwt = require('jsonwebtoken')
 const config = require('../utils/config')
 const middleware = require('../utils/middleware')
@@ -48,7 +47,7 @@ blogsRouter.delete('/api/blogs/:id', middleware.userExtractor, async (request, r
     const delBlog = await Blog.findById(id)
     console.log(delBlog)
     if ( delBlog.user.toString() === user.id.toString() ) {
-        await Blog.findByIdAndRemove(id)
+        await Blog.deleteOne(delBlog)
         return response.status(200).json(delBlog)
     }
 
