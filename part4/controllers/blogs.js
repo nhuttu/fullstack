@@ -16,7 +16,6 @@ blogsRouter.post('/api/blogs', middleware.userExtractor, async (request, respons
         return response.status(401).json({ error: 'token missing or invalid' })
     }
     const user = request.user
-    console.log(user)
     const blog = new Blog({
         title: body.title,
         author: body.author,
@@ -38,17 +37,19 @@ blogsRouter.post('/api/blogs', middleware.userExtractor, async (request, respons
 
 blogsRouter.delete('/api/blogs/:id', middleware.userExtractor, async (request, response) => {
     const decodedToken = jwt.verify(request.token, config.SECRET)
+    console.log(decodedToken)
     if (!decodedToken.id) {
         return response.status(401).json({ error: 'token missing or invalid' })
     }
+    console.log('asd')
     const user = request.user
-    console.log(user)
     const id = request.params.id
     const delBlog = await Blog.findById(id)
-    console.log(delBlog)
-    if ( delBlog.user.toString() === user.id.toString() ) {
+    if (delBlog.user.toString() === user.id.toString()) {
         await Blog.deleteOne(delBlog)
         return response.status(200).json(delBlog)
+    } else {
+        return response.status(403).json({ error: 'forbidden' })
     }
 
 })
