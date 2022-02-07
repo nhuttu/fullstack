@@ -24,7 +24,7 @@ const App = () => {
     </div>
   )
 }
-
+scrollX
 const renderApp = () => {
   ReactDOM.render(<App />, document.getElementById('root'))
 }
