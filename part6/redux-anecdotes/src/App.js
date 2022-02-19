@@ -5,10 +5,10 @@ import AnecdoteForm from './components/AnecdoteForm'
 const App = () => {
   return (
     <div>
-      <AnecdoteList/>
-      <AnecdoteForm/>
+      <AnecdoteList />
+      <AnecdoteForm />
     </div>
   )
 }
 
-export default App
+export default App 
