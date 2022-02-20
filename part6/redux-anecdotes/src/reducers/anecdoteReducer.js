@@ -18,7 +18,7 @@ const asObject = (anecdote) => {
     votes: 0
   }
 }
-const initialState = anecdotesAtStart.map(asObject).sort((a, b) => b.votes - a.votes)
+export const initialState = anecdotesAtStart.map(asObject).sort((a, b) => b.votes - a.votes)
 const anecdoteSlice = createSlice({
   name: 'anecdotes',
   initialState,
@@ -36,5 +36,7 @@ const anecdoteSlice = createSlice({
     }
   }
 })
+console.log(anecdoteSlice.getInitialState())
 export const { createAnecdote, vote } = anecdoteSlice.actions
+
 export default anecdoteSlice.reducer

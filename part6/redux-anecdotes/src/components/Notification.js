@@ -3,7 +3,7 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 
 const Notification = () => {
-  const notififaction = useSelector(state => state  )
+  const notififaction = useSelector(state => state.notififaction)
   console.log(notififaction)
   const style = {
     border: 'solid',
