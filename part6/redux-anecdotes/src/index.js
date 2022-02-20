@@ -4,12 +4,12 @@ import { createStore } from 'redux'
 import { Provider } from 'react-redux'
 import App from './App'
 import reducer from './reducers/anecdoteReducer'
-
-const store = createStore(reducer)
+import store from './reducers/store'
+import Notification from './components/Notification'
 
 ReactDOM.render(
-  <Provider store={store}>
-    <App />
-  </Provider>,
+    <Provider store={store}>
+      <App />
+    </Provider>,
   document.getElementById('root')
 )
