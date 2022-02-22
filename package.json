@@ -4,5 +4,8 @@
   },
   "scripts": {
     "ghp": "git add . && git commit -m \"commit\" && git push"
+  },
+  "dependencies": {
+    "redux-thunk": "^2.4.1"
   }
 }
