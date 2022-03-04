@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { Routes, Route, Link } from 'react-router-dom'
+import { Routes, Route, Link, useParams, useNavigate } from 'react-router-dom'
+import { useField } from './hooks'
 
 const Menu = () => {
   const padding = {
@@ -7,7 +8,7 @@ const Menu = () => {
   }
   return (
     <div>
-      <Link to={'/'}>anecdotes  </Link>
+      <Link to={'/anecdotes'}>anecdotes  </Link>
       <Link to={'/create'}>create  </Link>
       <Link to={'/about'}>about  </Link>
     </div>
@@ -18,7 +19,7 @@ const AnecdoteList = ({ anecdotes }) => (
   <div>
     <h2>Anecdotes</h2>
     <ul>
-      {anecdotes.map(anecdote => <li key={anecdote.id} >{anecdote.content}</li>)}
+      {anecdotes.map(anecdote => <li key={anecdote.id}><Link to={`/anecdotes/${anecdote.id}`}>{anecdote.content}</Link></li>)}
     </ul>
   </div>
 )
@@ -46,19 +47,21 @@ const Footer = () => (
 )
 
 const CreateNew = (props) => {
-  const [content, setContent] = useState('')
-  const [author, setAuthor] = useState('')
-  const [info, setInfo] = useState('')
+  const {reset: resetContent, ...cont} = useField('content')
+  const {reset: resetAuthor, ...auth} = useField('author')
+  const {reset: resetUrl, ...url} = useField('url')
 
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    props.addNew({
-      content,
-      author,
-      info,
-      votes: 0
-    })
+    const object = {content: cont.value, author: auth.value, info: url.value, votes: 0}
+    props.addNew(object)
+  }
+
+  const reset = () => {
+    resetContent()
+    resetAuthor()
+    resetUrl()
   }
 
   return (
@@ -67,24 +70,40 @@ const CreateNew = (props) => {
       <form onSubmit={handleSubmit}>
         <div>
           content
-          <input name='content' value={content} onChange={(e) => setContent(e.target.value)} />
+          <input {...cont} />
         </div>
         <div>
           author
-          <input name='author' value={author} onChange={(e) => setAuthor(e.target.value)} />
+          <input {...auth} />
         </div>
         <div>
           url for more info
-          <input name='info' value={info} onChange={(e) => setInfo(e.target.value)} />
+          <input {...url} />
         </div>
         <button>create</button>
       </form>
+        <button onClick={() => reset()}>reset</button>
     </div>
   )
 
 }
-
+const Anecdote = ({ anecdotes }) => {
+  console.log(anecdotes, 'dootit')
+  const id = useParams().id
+  console.log(id)
+  const a = anecdotes.find(a => Number(a.id) === Number(id))
+  console.log(a, 'tässä löhyddetty')
+  return (
+    <div>
+      <h2><p>{a.content}</p></h2>
+      <div><p>has {a.votes} votes</p></div>
+      <div>for more info see <a href={a.info}>{a.info}</a></div>
+      <p> </p>
+    </div>
+  )
+}
 const App = () => {
+  const navigate = useNavigate()
   const [anecdotes, setAnecdotes] = useState([
     {
       content: 'If it hurts, do it more often',
@@ -105,8 +124,16 @@ const App = () => {
   const [notification, setNotification] = useState('')
 
   const addNew = (anecdote) => {
+    console.log(anecdote, 'anec')
     anecdote.id = (Math.random() * 10000).toFixed(0)
+    console.log(anecdote.id)
     setAnecdotes(anecdotes.concat(anecdote))
+    console.log(anecdotes)
+    navigate('/anecdotes')
+    setNotification(`a new anecdote ${anecdote.content} created!`)
+    setTimeout(() => {
+      setNotification('')
+    }, 5000)
   }
 
   const anecdoteById = (id) =>
@@ -127,14 +154,16 @@ const App = () => {
     <div>
       <h1>Software anecdotes</h1>
       <Menu />
+      {notification}
       <div>
         <Routes>
-          <Route path='/' element={<AnecdoteList anecdotes={anecdotes} />} />
+          <Route path='/anecdotes/:id' element={<Anecdote anecdotes={anecdotes} />} />
+          <Route path='/anecdotes' element={<AnecdoteList anecdotes={anecdotes} />} />
           <Route path='/create' element={<CreateNew addNew={addNew} />} />
           <Route path='/about' element={<About />} />
         </Routes>
       </div>
-      <Footer/>
+      <Footer />
     </div>
   )
 }
