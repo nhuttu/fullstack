@@ -1,8 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Routes, Route, Link, useParams, useNavigate } from "react-router-dom";
 import { useField } from "./hooks";
-import { useDispatch, useSelector } from "react-redux";
-import { initalize } from "./reducers/blogReducer";
 
 const Menu = () => {
   const padding = {
@@ -148,10 +146,11 @@ const App = () => {
       id: 2,
     },
   ]);
+  const [notification, setNotification] = useState("");
   const addNew = (anecdote) => {
     console.log(anecdote, "anec");
     anecdote.id = (Math.random() * 10000).toFixed(0);
-
+    setAnecdotes(anecdotes.concat(anecdote));
     navigate("/anecdotes");
     setNotification(`a new anecdote ${anecdote.content} created!`);
     setTimeout(() => {
