@@ -5,12 +5,13 @@ import blogService from "./services/blogs";
 import loginService from "./services/login";
 import NewBlog from "./components/NewBlog";
 import Togglable from "./components/Togglable";
-import { Noti } from "./components/Notification";
+import { Noti, ErrorMsg } from "./components/Notification";
 import Users from "./components/Users";
 import { Route, Routes } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { initialize } from "./reducers/blogreducer";
 import { newMsg, rmvMsg } from "./reducers/notificationreducer";
+import { errMsg, remvMsg } from "./reducers/errorreducer";
 
 const App = () => {
   const blogs = useSelector((state) => state.blogs);
@@ -20,6 +21,7 @@ const App = () => {
   const blogRef = useRef();
   const dispatch = useDispatch();
   const notification = useSelector((state) => state.notification);
+  const errorMesg = useSelector((state) => state.errorMessage);
 
   useEffect(() => {
     dispatch(initialize());
@@ -48,9 +50,9 @@ const App = () => {
       setUsername("");
       setPassword("");
     } catch (exception) {
-      dispatch(newMsg("Wrong credentials"));
+      dispatch(errMsg("Wrong credentials"));
       setTimeout(() => {
-        dispatch(rmvMsg());
+        dispatch(remvMsg());
       }, 5000);
     }
   };
@@ -61,12 +63,12 @@ const App = () => {
         console.log(response);
       } catch (e) {
         dispatch(
-          newMsg(
+          errMsg(
             "maybe your token expired, tryna delete others' blogs? error happened dumbo"
           )
         );
         setTimeout(() => {
-          dispatch(rmvMsg());
+          dispatch(remvMsg());
         }, 5000);
       }
     }
@@ -136,9 +138,9 @@ const App = () => {
         dispatch(rmvMsg());
       }, 5000);
     } catch (e) {
-      dispatch(newMsg("Adding a new blog failed"));
+      dispatch(errMsg("Adding a new blog failed"));
       setTimeout(() => {
-        dispatch(rmvMsg());
+        dispatch(remvMsg());
       }, 5000);
     }
   };
@@ -148,7 +150,8 @@ const App = () => {
         <Route path="/users" element={<Users />} />
       </Routes>
       <div>
-        <Noti errorToDisplay={notification} />
+        <ErrorMsg msg={errorMesg} />
+        <Noti msg={notification} />
       </div>
       {user === null ? loginForm() : blogForm()}
     </div>

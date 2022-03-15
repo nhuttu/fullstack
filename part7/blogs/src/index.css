@@ -1,5 +1,5 @@
-.notification {
-  color: grey;
+.failure {
+  color: red;
   background: lightgrey;
   font-size: 20px;
   border-style: solid;
