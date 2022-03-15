@@ -3,7 +3,7 @@ import { Routes, Route, Link, useParams, useNavigate } from "react-router-dom";
 import { useField } from "./hooks";
 import { useDispatch, useSelector } from "react-redux";
 import { initalize } from "./reducers/blogReducer";
-import Footer from "./components/Footer";
+
 const Menu = () => {
   const padding = {
     paddingRight: 5,
@@ -132,13 +132,22 @@ const Anecdote = ({ anecdotes }) => {
 };
 const App = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(initalize());
-  }, [dispatch]);
-  const [notification, setNotification] = useState("");
-  const anecdotes = useSelector((state) => state.anecdotes);
-  console.log(anecdotes, "L139");
+  const [anecdotes, setAnecdotes] = useState([
+    {
+      content: "If it hurts, do it more often",
+      author: "Jez Humble",
+      info: "https://martinfowler.com/bliki/FrequencyReducesDifficulty.html",
+      votes: 0,
+      id: 1,
+    },
+    {
+      content: "Premature optimization is the root of all evil",
+      author: "Donald Knuth",
+      info: "http://wiki.c2.com/?PrematureOptimization",
+      votes: 0,
+      id: 2,
+    },
+  ]);
   const addNew = (anecdote) => {
     console.log(anecdote, "anec");
     anecdote.id = (Math.random() * 10000).toFixed(0);
