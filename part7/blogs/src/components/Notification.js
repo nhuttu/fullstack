@@ -1,22 +1,7 @@
 import React from "react";
 
-export const ErrorMsg = ({ errorToDisplay }) => {
-  if (errorToDisplay === null) return null
+export const Noti = ({ msg }) => {
+  if (!msg) return null;
 
-  if (errorToDisplay)
-    return (
-      <div className='failure'>
-        {errorToDisplay}
-      </div>
-    )
-}
-export const SuccessMsg = ({ sucToDisplay }) => {
-  if (sucToDisplay === null) return null
-
-  if (sucToDisplay)
-    return (
-      <div className='success'>
-        {sucToDisplay}
-      </div>
-    )
-}
+  if (msg) return <div className="notification">{msg}</div>;
+};

@@ -5,20 +5,21 @@ import blogService from "./services/blogs";
 import loginService from "./services/login";
 import NewBlog from "./components/NewBlog";
 import Togglable from "./components/Togglable";
-import { ErrorMsg, SuccessMsg } from "./components/Notification";
+import { Noti } from "./components/Notification";
 import Users from "./components/Users";
 import { Route, Routes } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { initialize } from "./reducers/blogreducer";
+import { newMsg, rmvMsg } from "./reducers/notificationreducer";
+
 const App = () => {
   const blogs = useSelector((state) => state.blogs);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState(null);
-  const [sucMessage, setSucMessage] = useState(null);
   const [user, setUser] = useState(null);
   const blogRef = useRef();
   const dispatch = useDispatch();
+  const notification = useSelector((state) => state.notification);
 
   useEffect(() => {
     dispatch(initialize());
@@ -47,9 +48,9 @@ const App = () => {
       setUsername("");
       setPassword("");
     } catch (exception) {
-      setErrorMessage("Wrong credentials");
+      dispatch(newMsg("Wrong credentials"));
       setTimeout(() => {
-        setErrorMessage(null);
+        dispatch(rmvMsg());
       }, 5000);
     }
   };
@@ -59,11 +60,13 @@ const App = () => {
         const response = await blogService.deletion(blog.id);
         console.log(response);
       } catch (e) {
-        setErrorMessage(
-          "maybe your token expired, tryna delete others' blogs? error happened dumbo"
+        dispatch(
+          newMsg(
+            "maybe your token expired, tryna delete others' blogs? error happened dumbo"
+          )
         );
         setTimeout(() => {
-          setErrorMessage(null);
+          dispatch(rmvMsg());
         }, 5000);
       }
     }
@@ -128,14 +131,14 @@ const App = () => {
     try {
       console.log(newblog);
       const blog = await blogService.create(newblog);
-      setSucMessage(`a new blog ${blog.title} by ${blog.author} added`);
+      dispatch(newMsg(`a new blog ${blog.title} by ${blog.author} added`));
       setTimeout(() => {
-        setSucMessage(null);
+        dispatch(rmvMsg());
       }, 5000);
     } catch (e) {
-      setErrorMessage("Adding a new blog failed");
+      dispatch(newMsg("Adding a new blog failed"));
       setTimeout(() => {
-        setErrorMessage(null);
+        dispatch(rmvMsg());
       }, 5000);
     }
   };
@@ -145,8 +148,7 @@ const App = () => {
         <Route path="/users" element={<Users />} />
       </Routes>
       <div>
-        <ErrorMsg errorToDisplay={errorMessage} />
-        <SuccessMsg sucToDisplay={sucMessage} />
+        <Noti errorToDisplay={notification} />
       </div>
       {user === null ? loginForm() : blogForm()}
     </div>

@@ -1,8 +1,7 @@
 import blogService from "../services/blogs";
-import { configureStore, createSlice } from "@reduxjs/toolkit";
 
 const sortedBlogs = (blogs) => {
-  return blogs.sort((a, b) => b.votes - a.votes);
+  return blogs.map((a) => a).sort((a, b) => b.likes - a.likes);
 };
 const initialState = [];
 const blogReducer = (state = initialState, action) => {
