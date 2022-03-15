@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Routes, Route, Link, useParams, useNavigate } from "react-router-dom";
 import { useField } from "./hooks";
-
+import { useDispatch, useSelector } from "react-redux";
+import { initalize } from "./reducers/blogReducer";
+import Footer from "./components/Footer";
 const Menu = () => {
   const padding = {
     paddingRight: 5,
@@ -15,18 +17,20 @@ const Menu = () => {
   );
 };
 
-const AnecdoteList = ({ anecdotes }) => (
-  <div>
-    <h2>Anecdotes</h2>
-    <ul>
-      {anecdotes.map((anecdote) => (
-        <li key={anecdote.id}>
-          <Link to={`/anecdotes/${anecdote.id}`}>{anecdote.content}</Link>
-        </li>
-      ))}
-    </ul>
-  </div>
-);
+const AnecdoteList = ({ anecdotes }) => {
+  return (
+    <div>
+      <h2>Anecdotes</h2>
+      <ul>
+        {anecdotes.map((anecdote) => (
+          <li key={anecdote.id}>
+            <Link to={`/anecdotes/${anecdote.id}`}>{anecdote.content}</Link>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
 
 const About = () => (
   <div>
@@ -128,31 +132,17 @@ const Anecdote = ({ anecdotes }) => {
 };
 const App = () => {
   const navigate = useNavigate();
-  const [anecdotes, setAnecdotes] = useState([
-    {
-      content: "If it hurts, do it more often",
-      author: "Jez Humble",
-      info: "https://martinfowler.com/bliki/FrequencyReducesDifficulty.html",
-      votes: 0,
-      id: 1,
-    },
-    {
-      content: "Premature optimization is the root of all evil",
-      author: "Donald Knuth",
-      info: "http://wiki.c2.com/?PrematureOptimization",
-      votes: 0,
-      id: 2,
-    },
-  ]);
-
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(initalize());
+  }, [dispatch]);
   const [notification, setNotification] = useState("");
-
+  const anecdotes = useSelector((state) => state.anecdotes);
+  console.log(anecdotes, "L139");
   const addNew = (anecdote) => {
     console.log(anecdote, "anec");
     anecdote.id = (Math.random() * 10000).toFixed(0);
-    console.log(anecdote.id);
-    setAnecdotes(anecdotes.concat(anecdote));
-    console.log(anecdotes);
+
     navigate("/anecdotes");
     setNotification(`a new anecdote ${anecdote.content} created!`);
     setTimeout(() => {
@@ -169,8 +159,6 @@ const App = () => {
       ...anecdote,
       votes: anecdote.votes + 1,
     };
-
-    setAnecdotes(anecdotes.map((a) => (a.id === id ? voted : a)));
   };
 
   return (
