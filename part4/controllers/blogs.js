@@ -23,6 +23,7 @@ blogsRouter.post('/api/blogs', middleware.userExtractor, async (request, respons
         likes: body.likes,
         user: user.id
     })
+    console.log(user, 'missing')
     try {
         const saved = await blog.save()
         user.blogs = user.blogs.concat(saved.id)

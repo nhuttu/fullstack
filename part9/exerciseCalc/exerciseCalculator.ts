@@ -33,8 +33,9 @@ const calculateExercises = (compareTo: number, args: Array<number>): Result => {
     average: avg,
   };
 };
-const abc = Number(process.argv[2]);
-const args = process.argv.slice(3, process.argv.length).map((e) => Number(e));
-console.log(args);
-console.log(process.argv[2]);
-console.log(calculateExercises(abc, args));
+// const abc = Number(process.argv[2]);
+// const args = process.argv.slice(3, process.argv.length).map((e) => Number(e));
+// console.log(args);
+// console.log(process.argv[2]);
+// console.log(calculateExercises(abc, args));
+export default calculateExercises;
