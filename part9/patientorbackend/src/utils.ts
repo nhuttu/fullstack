@@ -13,6 +13,7 @@ const parseDoB = (date: unknown): string => {
   return date;
 };
 const parseName = (name: unknown): string => {
+  console.log(name);
   if (!name || !isString(name)) {
     throw new Error("Incorrect Name");
   }
@@ -20,6 +21,7 @@ const parseName = (name: unknown): string => {
 };
 
 const parseSSN = (ssn: unknown): string => {
+  console.log(ssn);
   if (!ssn || !isString(ssn)) {
     throw new Error("Incorrect SSN");
   }
@@ -44,6 +46,7 @@ const toNewPatientEntry = ({
   gender,
   occupation,
 }: NewPatientEntry): NewPatientEntry => {
+  console.log(name);
   const newEntry: NewPatientEntry = {
     name: parseName(name),
     dateOfBirth: parseDoB(dateOfBirth),

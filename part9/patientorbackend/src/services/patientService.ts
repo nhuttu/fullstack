@@ -1,7 +1,6 @@
 import patientData from "../data/patients";
 import { NewPatientEntry, NonSensitivePatients, Patients } from "../types";
 import { v1 as uuid } from "uuid";
-const id = uuid();
 const patients: Array<Patients> = patientData;
 
 const getPatients = (): Array<Patients> => {
@@ -17,7 +16,8 @@ const getNonSensitivePatients = (): NonSensitivePatients[] => {
   }));
 };
 const addEntry = (entry: NewPatientEntry): Patients => {
-  const newPatientEntry = { id: id, ...entry };
+  console.log(entry);
+  const newPatientEntry = { id: uuid(), ...entry };
   patients.push(newPatientEntry);
   return newPatientEntry;
 };

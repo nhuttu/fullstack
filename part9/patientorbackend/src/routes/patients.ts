@@ -3,12 +3,13 @@ import patientService from "../services/patientService";
 import toNewPatientEntry from "../utils";
 const router = express.Router();
 
-router.use("/", (_req, res) => {
+router.get("/", (_req, res) => {
   res.send(patientService.getNonSensitivePatients());
 });
 
 router.post("/", (req, res) => {
   console.log("hello");
+  console.log(req.body);
   try {
     const newEntry = toNewPatientEntry(req.body);
     const addedEntry = patientService.addEntry(newEntry);
