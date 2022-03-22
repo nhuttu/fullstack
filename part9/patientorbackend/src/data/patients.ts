@@ -2,7 +2,7 @@ import { Patients } from "../types";
 const patients: Array<Patients> = [
   {
     id: "d2773336-f723-11e9-8f0b-362b9e155667",
-    name: "John McClane",
+    name: "John MciiClane",
     dateOfBirth: "1986-07-09",
     ssn: "090786-122X",
     gender: "male",
