@@ -10,6 +10,7 @@ const Authors = (props) => {
   }
   const authors = props.authors;
   const submit = (event) => {
+    console.log(parseInt(setBornTo));
     props.changeDoB({
       variables: { name, setBornTo: parseInt(setBornTo) },
     });

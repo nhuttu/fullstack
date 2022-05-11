@@ -168,6 +168,7 @@ const resolvers = {
       const person = authors.find((author) => author.name === args.name);
       if (!person) return null;
       const updatedPerson = { ...person, born: args.setBornTo };
+      console.log(updatedPerson);
       authors = authors.map((a) => (a.name === args.name ? updatedPerson : a));
       return updatedPerson;
     },

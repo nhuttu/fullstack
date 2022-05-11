@@ -44,7 +44,9 @@ export const EDIT_DoB = gql`
   mutation editAuthor($name: String!, $setBornTo: Int!) {
     editAuthor(name: $name, setBornTo: $setBornTo) {
       name
-      setBornTo
+      id
+      born
+      bookCount
     }
   }
 `;

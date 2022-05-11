@@ -13,7 +13,7 @@ const App = () => {
     refetchQueries: [{ query: ALL_BOOKS }, { query: ALL_AUTHORS }],
   });
   const [changeDoB] = useMutation(EDIT_DoB, {
-    refetchQueries: [{ query: ALL_AUTHORS }],
+    refetchQueries: [{ query: ALL_BOOKS }, { query: ALL_AUTHORS }],
   });
   if (authors.loading || books.loading || createBook.loading) {
     return <div>loading...</div>;
