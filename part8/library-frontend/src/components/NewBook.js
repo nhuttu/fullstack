@@ -1,5 +1,3 @@
-/* eslint-disable react-hooks/rules-of-hooks */
-import { useMutation } from "@apollo/client";
 import { useState } from "react";
 
 const NewBook = (props) => {
@@ -12,10 +10,10 @@ const NewBook = (props) => {
   if (!props.show) {
     return null;
   }
-  const asd = useMutation();
+
   const submit = async (event) => {
     event.preventDefault();
-
+    props.createBook({ variables: { title, published, author, genres } });
     console.log("add book...");
 
     setTitle("");
