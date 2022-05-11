@@ -1,8 +1,24 @@
+import { useState } from "react";
+
 const Authors = (props) => {
+  console.log(props);
+  const [name, setName] = useState("");
+  const [setBornTo, setDob] = useState("");
+
   if (!props.show) {
     return null;
   }
   const authors = props.authors;
+  const submit = (event) => {
+    props.changeDoB({
+      variables: { name, setBornTo: parseInt(setBornTo) },
+    });
+    console.log(setBornTo, name);
+    event.preventDefault();
+    console.log("asd");
+    setName("");
+    setDob("");
+  };
 
   return (
     <div>
@@ -23,6 +39,28 @@ const Authors = (props) => {
           ))}
         </tbody>
       </table>
+      <div>
+        <h2>set birthyear</h2>
+        <form onSubmit={submit}>
+          <div>
+            name
+            <input
+              value={name}
+              onChange={({ target }) => setName(target.value)}
+            />
+          </div>
+          <div>
+            born
+            <input
+              value={setBornTo}
+              onChange={({ target }) => setDob(target.value)}
+            />
+          </div>
+          <div>
+            <button type="submit">update author</button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 };

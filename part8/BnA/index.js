@@ -92,7 +92,7 @@ const typeDefs = gql`
   type Author {
     name: String!
     id: ID!
-    born: String
+    born: Int
     bookCount: Int!
   }
   type Book {
@@ -146,7 +146,8 @@ const resolvers = {
   },
   Mutation: {
     addBook: (root, args) => {
-      if (!authors.includes(args.author)) {
+      const authorsInArray = authors.map((a) => a.name);
+      if (!authorsInArray.includes(args.author)) {
         const author = {
           name: args.author,
           id: uuid(),
